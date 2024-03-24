@@ -22,7 +22,7 @@ const useGetMessages = () => {
       }
     };
     if (selectedConversation) getMessages();
-  }, [selectedConversation._id]);
+  }, [selectedConversation?._id]);
 
   return { loading, messages };
 };
