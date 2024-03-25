@@ -1,6 +1,7 @@
 import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import express from 'express';
+import Message from '../models/message.model.js';
 
 const app = express();
 const server = http.createServer(app);
@@ -29,6 +30,29 @@ io.on('connection', (socket) => {
     console.log(`Client disconnected ${socket.id}`);
     delete userSocketMap[userId];
     io.emit('getOnlineUsers', Object.keys(userSocketMap));
+  });
+
+  socket.on('markMessagesAsSeen', async ({ senderId, receiverId }) => {
+    try {
+      const bulkOps = [
+        {
+          updateMany: {
+            filter: {
+              senderId: senderId,
+              receiverId: receiverId,
+              seen: false,
+            },
+            update: { $set: { seen: true } },
+          },
+        },
+      ];
+      await Message.bulkWrite(bulkOps);
+
+      const receiverSocketId = getReceiverSocketId(senderId);
+      io.to(receiverSocketId).emit('messagesSeen', receiverId);
+    } catch (error) {
+      console.log(`Error in markMessagesAsSeen event ${error.message}`);
+    }
   });
 });
 
