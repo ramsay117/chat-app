@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
-import { useAuthContext } from '../../context/AuthContext.jsx';
 import useGetMessages from "../../hooks/useGetMessages";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
 import Message from "./Message";
 import useListenMessages from "../../hooks/useListenMessages";
 import useSeenMessages from '../../hooks/useSeenMessages.js';
+import { useConversationContext } from '../../context/ConversationContext.jsx';
 
 const Messages = () => {
-  const { authUser } = useAuthContext();
+  const { selectedConversation } = useConversationContext();
   const { loading, messages } = useGetMessages();
   useListenMessages();
   useSeenMessages();
@@ -20,7 +20,7 @@ const Messages = () => {
   }, [messages]);
 
   const userMessages = messages.filter(message =>
-    message.senderId === authUser._id || message.receiverId === authUser._id);
+    message.senderId === selectedConversation._id || message.receiverId === selectedConversation._id);
   // other listeners might be adding messages
 
   return (
