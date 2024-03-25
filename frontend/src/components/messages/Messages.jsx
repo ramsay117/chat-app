@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useAuthContext } from '../../context/AuthContext.jsx';
 import useGetMessages from "../../hooks/useGetMessages";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
 import Message from "./Message";
@@ -6,6 +7,7 @@ import useListenMessages from "../../hooks/useListenMessages";
 import useSeenMessages from '../../hooks/useSeenMessages.js';
 
 const Messages = () => {
+  const { authUser } = useAuthContext();
   const { loading, messages } = useGetMessages();
   useListenMessages();
   useSeenMessages();
@@ -17,18 +19,22 @@ const Messages = () => {
     }, 100);
   }, [messages]);
 
+  const userMessages = messages.filter(message =>
+    message.senderId === authUser._id || message.receiverId === authUser._id);
+  // other listeners might be adding messages
+
   return (
     <div className='px-4 flex-1 overflow-auto'>
       {!loading &&
-        messages.length > 0 &&
-        messages.map((message) => (
+        userMessages.length > 0 &&
+        userMessages.map((message) => (
           <div key={message._id} ref={lastMessageRef}>
             <Message message={message} />
           </div>
         ))}
 
       {loading && [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
-      {!loading && messages.length === 0 && (
+      {!loading && userMessages.length === 0 && (
         <p className='text-center'>Send a message to start the conversation</p>
       )}
     </div>

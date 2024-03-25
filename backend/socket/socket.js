@@ -48,8 +48,7 @@ io.on('connection', (socket) => {
       ];
       await Message.bulkWrite(bulkOps);
 
-      const receiverSocketId = getReceiverSocketId(senderId);
-      io.to(receiverSocketId).emit('messagesSeen', receiverId);
+      io.to(userSocketMap[senderId]).emit('messagesSeen', receiverId);
     } catch (error) {
       console.log(`Error in markMessagesAsSeen event ${error.message}`);
     }

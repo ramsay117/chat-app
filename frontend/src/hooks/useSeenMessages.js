@@ -10,18 +10,25 @@ const useSeenMessages = () => {
     useConversationContext();
 
   useEffect(() => {
-    socket?.emit('markMessagesAsSeen', {
+    if (
+      !socket ||
+      !selectedConversation ||
+      messages.length === 0 ||
+      messages[messages.length - 1].senderId == authUser._id
+    )
+      return;
+    socket.emit('markMessagesAsSeen', {
       senderId: selectedConversation._id,
       receiverId: authUser._id,
     });
+  }, [socket, messages, selectedConversation?._id]);
 
+  useEffect(() => {
     socket?.on('messagesSeen', (receiverId) => {
-      const senderId = authUser._id;
-      console.log(receiverId);
       setMessages((prev) => {
         return prev.map((message) => {
           if (
-            message.senderId === senderId &&
+            message.senderId === authUser._id &&
             message.receiverId === receiverId
           ) {
             return { ...message, seen: true };
@@ -34,9 +41,10 @@ const useSeenMessages = () => {
     return () => {
       socket?.off('messagesSeen');
     };
-  }, [socket, messages.length, selectedConversation?._id]);
-  // After the re-render, React checks the dependencies of useEffect
-  // if the messages are marked as seen (which changes their content but not the array length), it doesn't cause the effect to run again
+  }, [socket, messages, selectedConversation?._id]);
+  // When we use a state updater function (a function passed to setState),
+  // React ensures that the state update is based on the previous state,
+  // which can prevent unnecessary re-renders if the new state is the same as the previous state
 };
 
 export default useSeenMessages;
