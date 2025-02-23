@@ -30,6 +30,7 @@ export const signup = async (req, res, next) => {
     });
 
     await newUser.save();
+
     generateTokenAndSetCookie(newUser.id, res);
 
     return res.status(201).json({
@@ -47,11 +48,12 @@ export const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
-    if (!user || !await bcryptjs.compare(password, user.password)) {
+    if (!user || !(await bcryptjs.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
     generateTokenAndSetCookie(user.id, res);
+
     return res.status(200).json({
       _id: user.id,
       username: user.username,
@@ -64,6 +66,6 @@ export const login = async (req, res, next) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie('jwt');
+  res.clearCookie('chat-jwt');
   return res.status(200).json({ message: 'Logged out successfully' });
 };

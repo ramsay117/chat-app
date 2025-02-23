@@ -19,7 +19,7 @@ app.use(
   cors({
     origin: ['http://localhost:5173'],
     methods: ['GET', 'POST'],
-  })
+  }),
 );
 app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 
@@ -32,7 +32,17 @@ app.get('*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, async () => {
-  await connectToMongoDB();
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+
+const startServer = async () => {
+  try {
+    await connectToMongoDB();
+    server.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error.message);
+    process.exit(1);
+  }
+};
+
+startServer();
