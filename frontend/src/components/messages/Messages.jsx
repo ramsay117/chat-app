@@ -26,7 +26,7 @@ const Messages = () => {
 
   return (
     <div className="flex-1 overflow-auto p-4 space-y-4">
-      {true && <MessageSkeleton />}
+      {loading && <MessageSkeleton />}
 
       {!loading && userMessages.length === 0 && (
         <div className="flex items-center justify-center h-full">
