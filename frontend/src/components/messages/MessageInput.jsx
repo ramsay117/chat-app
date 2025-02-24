@@ -16,6 +16,7 @@ const MessageInput = () => {
   return (
     <form onSubmit={handleSubmit} className="join p-4 border-t border-white/10">
       <input
+        type="text"
         placeholder="Send a message"
         className="input input-bordered join-item w-full focus:outline-none focus:border-primary"
         value={message}

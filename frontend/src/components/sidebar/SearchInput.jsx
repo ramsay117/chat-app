@@ -27,6 +27,7 @@ const SearchInput = () => {
   return (
     <form onSubmit={handleSubmit} className="join">
       <input
+        type="text"
         placeholder="Search users..."
         className="input input-bordered join-item w-full focus:outline-none focus:border-primary"
         value={search}
