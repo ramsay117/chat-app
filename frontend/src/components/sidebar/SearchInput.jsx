@@ -16,7 +16,10 @@ const SearchInput = () => {
       return toast.error("Search term must be at least 3 characters long");
     }
 
-    const conversation = conversations.find((c) => c.fullName.toLowerCase().includes(search.toLowerCase()));
+    const conversation = conversations.find((c) =>
+      c.fullName.toLowerCase().includes(search.toLowerCase())
+    );
+
     if (conversation) {
       setSelectedConversation(conversation);
       setSearch("");
@@ -24,16 +27,15 @@ const SearchInput = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='flex items-center gap-2'>
+    <form onSubmit={handleSubmit} className="flex">
       <input
-        type='text'
-        placeholder='Search…'
-        className='input input-bordered rounded-full'
+        placeholder="Search users..."
+        className="input rounded-r-none focus:outline-none focus:border-primary"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <button type='submit' className='btn btn-circle bg-indigo-600 hover:bg-indigo-800 text-slate-200'>
-        <IoSearchSharp className='w-6 h-6 outline-none' />
+      <button type="submit" className="btn btn-primary rounded-l-none">
+        <IoSearchSharp className="w-5 h-5" />
       </button>
     </form>
   );
