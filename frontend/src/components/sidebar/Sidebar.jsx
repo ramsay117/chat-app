@@ -1,16 +1,16 @@
-import SearchInput from "./SearchInput.jsx";
-import Conversations from "./Conversations.jsx";
-import LogoutButton from "./LogoutButton.jsx";
+import SearchInput from './SearchInput.jsx';
+import Conversations from './Conversations.jsx';
+import LogoutButton from './LogoutButton.jsx';
 
 const Sidebar = () => {
   return (
-    <aside className="min-w-[280px] max-w-[320px] flex flex-col p-4 backdrop-blur-md border-r-2 border-white/30">
-      <SearchInput />
-      <div className="divider my-2"></div>
+    <aside className="w-[280px] flex flex-col p-4 border-r border-white/20">
+        <SearchInput />
+      <div className="divider my-2" />
       <div className="flex-1 overflow-auto">
         <Conversations />
       </div>
-      <div className="pt-4 border-t-2 border-white/30">
+      <div className="pt-4 border-t border-white/10">
         <LogoutButton />
       </div>
     </aside>

@@ -12,8 +12,8 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
       onClick={() => setSelectedConversation(conversation)}
       className={`w-full p-2 flex items-center gap-3 rounded-lg transition-colors ${
         isSelected
-          ? 'bg-base-200/30 border border-white/30'
-          : 'hover:bg-base-300/70'
+          ? 'bg-primary/10 border border-white/20'
+          : 'hover:bg-secondary/10'
       }`}
     >
       <div className={`avatar ${isOnline ? 'online' : ''}`}>

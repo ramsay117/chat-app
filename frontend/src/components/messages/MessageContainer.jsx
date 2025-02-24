@@ -7,6 +7,7 @@ import { useConversationContext } from '../../context/ConversationContext.jsx';
 
 const MessageContainer = () => {
   const { selectedConversation, setSelectedConversation } = useConversationContext();
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
@@ -19,15 +20,16 @@ const MessageContainer = () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [setSelectedConversation]);
+
   return (
-    <div className='md:min-w-[450px] flex flex-col'>
+    <div className="flex-1 flex flex-col min-w-[400px]">
       {!selectedConversation ? (
         <NoChatSelected />
       ) : (
         <>
-          <div className='bg-slate-950 px-4 py-2 mb-2'>
-            <span className='text-slate-500'>To:</span>{" "}
-            <span className='text-slate-400 font-semibold'>{selectedConversation.fullName}</span>
+          <div className="p-4 border-b border-white/10">
+            <span className="text-base-content/70">To:</span>{" "}
+            <span className="font-medium">{selectedConversation.fullName}</span>
           </div>
           <Messages />
           <MessageInput />
@@ -37,17 +39,19 @@ const MessageContainer = () => {
   );
 };
 
-export default MessageContainer;
-
 const NoChatSelected = () => {
   const { authUser } = useAuthContext();
   return (
-    <div className='flex items-center justify-center w-full h-full'>
-      <div className='px-4 text-center sm:text-lg md:text-xl text-slate-300 font-semibold flex flex-col items-center gap-2'>
-        <p>Welcome 👋 {authUser.fullName} ❄</p>
-        <p>Select a chat to start messaging</p>
-        <TiMessages className='text-3xl md:text-6xl text-center' />
+    <div className="flex-1 flex items-center justify-center">
+      <div className="text-center space-y-4">
+        <p className="text-lg">
+          Welcome <span className="text-primary font-medium">{authUser.fullName}</span> 👋
+        </p>
+        <p className="text-base-content/70">Select a chat to start messaging</p>
+        <TiMessages className="w-16 h-16 mx-auto text-base-content/50" />
       </div>
     </div>
   );
 };
+
+export default MessageContainer;

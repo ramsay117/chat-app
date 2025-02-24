@@ -1,32 +1,29 @@
-import { useState } from "react";
-import { BsSend } from "react-icons/bs";
-import useSendMessage from "../../hooks/useSendMessage";
+import { useState } from 'react';
+import { BsSend } from 'react-icons/bs';
+import useSendMessage from '../../hooks/useSendMessage';
 
 const MessageInput = () => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const { loading, sendMessage } = useSendMessage();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!message) return;
     await sendMessage(message);
-    setMessage("");
+    setMessage('');
   };
 
   return (
-    <form className='px-4 my-3' onSubmit={handleSubmit}>
-      <div className='w-full relative'>
-        <input
-          type='text'
-          className='border text-sm rounded-lg block w-full p-2.5 bg-slate-900 border-slate-500 text-white'
-          placeholder='Send a message'
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button type='submit' className='absolute inset-y-0 end-0 flex items-center pe-3'>
-          {loading ? <div className='loading loading-spinner'></div> : <BsSend />}
-        </button>
-      </div>
+    <form onSubmit={handleSubmit} className="join p-4 border-t border-white/10">
+      <input
+        placeholder="Send a message"
+        className="input input-bordered join-item w-full focus:outline-none focus:border-primary"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
+      <button type="submit" className="btn btn-primary join-item">
+        {loading ? <span className="loading loading-spinner" /> : <BsSend className="w-5 h-5" />}
+      </button>
     </form>
   );
 };

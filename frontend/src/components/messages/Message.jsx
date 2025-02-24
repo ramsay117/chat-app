@@ -1,6 +1,6 @@
-import { useAuthContext } from "../../context/AuthContext";
+import { useAuthContext } from '../../context/AuthContext';
 import { useConversationContext } from '../../context/ConversationContext.jsx';
-import { extractTime } from "../../utils/extractTime";
+import { extractTime } from '../../utils/extractTime';
 
 const Message = ({ message }) => {
   const { authUser } = useAuthContext();
@@ -9,18 +9,21 @@ const Message = ({ message }) => {
   const formattedTime = extractTime(message.createdAt);
   const chatClassName = fromMe ? 'chat-end' : 'chat-start';
   const profilePic = fromMe ? authUser.profilePic : selectedConversation?.profilePic;
-  const bubbleBgColor = fromMe ? 'bg-rose-700' : '';
+  const bubbleClassName = fromMe ? 'bg-success/70' : 'bg-accent/30';
   const shakeClass = message.shouldShake ? 'shake' : '';
 
   return (
     <div className={`chat ${chatClassName}`}>
-      <div className='chat-image avatar'>
-        <div className='w-10 rounded-full'>
-          <img alt='Tailwind CSS chat bubble component' src={profilePic} />
+      <div className="chat-image avatar">
+        <div className="w-10 rounded-full ring-1">
+          <img alt={`${fromMe ? 'Your' : selectedConversation.fullName + "'s"} avatar`} src={profilePic} />
         </div>
       </div>
-      <div className={`chat-bubble text-white ${bubbleBgColor} ${shakeClass} pb-2`}>{message.message}</div>
-      <div className='chat-footer text-white opacity-50 text-xs flex gap-1 items-center'>{formattedTime} {message.seen && fromMe ? 'seen' : ''}</div>
+      <div className={`chat-bubble ${bubbleClassName} ${shakeClass}`}>{message.message}</div>
+      <div className="chat-footer text-xs text-base-content/50">
+        <span>{formattedTime}</span>
+        {message.seen && fromMe && <span className="text-info ml-1">seen</span>}
+      </div>
     </div>
   );
 };
