@@ -6,18 +6,15 @@ const Conversations = () => {
   const { loading, conversations } = useGetConversations();
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="space-y-2">
       {loading ? (
-        <div className="flex justify-center p-4">
-          <span className="loading loading-spinner"></span>
-        </div>
+        <span className="loading loading-spinner" />
       ) : (
-        conversations.map((conversation, idx) => (
+        conversations.map((conversation) => (
           <Conversation
             key={conversation._id}
             conversation={conversation}
             emoji={getRandomEmoji()}
-            lastIdx={idx === conversations.length - 1}
           />
         ))
       )}
