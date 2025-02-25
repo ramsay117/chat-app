@@ -1,4 +1,4 @@
-const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
+const GenderRadio = ({ onRadioChange, selectedGender }) => {
   return (
     <div className="form-control">
       <label className="label">
@@ -13,7 +13,7 @@ const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
             name="gender"
             className="radio radio-primary"
             checked={selectedGender === 'male'}
-            onChange={() => onCheckboxChange('male')}
+            onChange={() => onRadioChange('male')}
           />
         </label>
 
@@ -24,7 +24,7 @@ const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
             name="gender"
             className="radio radio-primary"
             checked={selectedGender === 'female'}
-            onChange={() => onCheckboxChange('female')}
+            onChange={() => onRadioChange('female')}
           />
         </label>
       </div>
@@ -32,4 +32,4 @@ const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
   );
 };
 
-export default GenderCheckbox;
+export default GenderRadio;

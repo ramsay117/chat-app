@@ -38,7 +38,6 @@ const isValidUser = ({
     return false;
   }
   if (password !== confirmPassword) {
-    console.log('helo');
     toast.error('Passwords do not match');
     return false;
   }

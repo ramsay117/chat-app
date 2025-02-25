@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import GenderCheckbox from '../components/ui/GenderCheckbox.jsx';
+import GenderRadio from '../components/ui/GenderRadio.jsx';
 import { useState } from 'react';
 import useSignup from '../hooks/useSignup.js';
 
@@ -14,7 +14,7 @@ const Signup = () => {
 
   const { loading, signup } = useSignup();
 
-  const handleCheckboxChange = (gender) => {
+  const handleRadioChange = (gender) => {
     setInputs({ ...inputs, gender });
   };
 
@@ -83,7 +83,7 @@ const Signup = () => {
               />
             </div>
 
-            <GenderCheckbox onCheckboxChange={handleCheckboxChange} selectedGender={inputs.gender} />
+            <GenderRadio onRadioChange={handleRadioChange} selectedGender={inputs.gender} />
 
             <div className="card-actions flex-col gap-4 pt-2">
               <Link to="/login" className="link link-primary text-sm">

@@ -1,4 +1,4 @@
-export const funEmojis = [
+const funEmojis = [
   '👾',
   '⭐',
   '🌟',
