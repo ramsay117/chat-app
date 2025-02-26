@@ -17,7 +17,7 @@ const Messages = () => {
     if (lastMessageRef.current) {
       lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages]);
+  }, [messages.length]);
 
   const userMessages = messages.filter(
     (message) => message.senderId === selectedConversation._id || message.receiverId === selectedConversation._id,
