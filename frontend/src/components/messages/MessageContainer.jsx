@@ -11,7 +11,6 @@ const MessageContainer = () => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
-        localStorage.removeItem('chat-conversation');
         setSelectedConversation(null);
       }
     };

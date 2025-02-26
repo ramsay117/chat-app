@@ -5,23 +5,21 @@ import { useConversationContext } from '../context/ConversationContext.jsx';
 
 const useGetMessages = () => {
   const [loading, setLoading] = useState(false);
-  const { messages, setMessages, selectedConversation } =
-    useConversationContext();
+  const { messages, setMessages, selectedConversation } = useConversationContext();
+
   useEffect(() => {
-    const getMessages = async () => {
+    (async () => {
+      if (!selectedConversation?._id) return;
       try {
         setLoading(true);
-        const res = await axios.get(
-          `api/messages/${selectedConversation._id}/`
-        );
+        const res = await axios.get(`api/messages/${selectedConversation._id}/`);
         setMessages(res.data);
       } catch (error) {
-        toast.error(error.response?.data?.message || error.message);
+        toast.error(error.response?.data?.message || error.message || 'Failed to fetch messages');
       } finally {
         setLoading(false);
       }
-    };
-    if (selectedConversation) getMessages();
+    })();
   }, [selectedConversation?._id]);
 
   return { loading, messages };

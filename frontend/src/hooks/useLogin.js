@@ -1,40 +1,57 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../context/AuthContext.jsx';
+
+const validateUser = ({ username, password }) => {
+  if (!username?.trim()) {
+    return { isValid: false, message: 'Username is required' };
+  } else if (username.length < 3) {
+    return { isValid: false, message: 'Username must be at least 3 characters' };
+  }
+
+  if (!password) {
+    return { isValid: false, message: 'Password is required' };
+  } else if (password.length < 6) {
+    return { isValid: false, message: 'Password must be at least 6 characters' };
+  }
+
+  return { isValid: true, message: '' };
+};
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const { setAuthUser } = useAuthContext();
 
-  const login = async (username, password) => {
+  const login = useCallback(async (username, password) => {
+    const validation = validateUser({ username, password });
+    if (!validation.isValid) {
+      toast.error(validation.message);
+      return false;
+    }
+
     try {
       setLoading(true);
-      if (!isValidUser({ username, password })) return;
       const res = await axios.post('api/auth/login', { username, password });
-      toast.success('Login successful');
-      localStorage.setItem('chat-user', JSON.stringify(res.data));
       setAuthUser(res.data);
+
+      toast.success('Login successful');
+      return true;
     } catch (error) {
-      console.log(error);
-      toast.error(error.response?.data?.message || error.message);
+      if (error.response?.status === 401) {
+        toast.error(error.response.data?.message || 'Invalid credentials');
+      } else if (error.response?.status === 500) {
+        toast.error('Server error. Please try again later.');
+      } else {
+        toast.error(error.response?.data?.message || error.message || 'Login failed');
+      }
+      return false;
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
   return { loading, login };
 };
 
 export default useLogin;
-
-const isValidUser = ({ username, password }) => {
-  if (!username || !password) {
-    toast.error('All fields are required');
-    return false;
-  }
-  if (password.length < 6) {
-    toast.error('Password must be at least 6 characters');
-    return false;
-  }
-  return true;
-};
