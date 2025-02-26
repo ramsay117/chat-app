@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import MessageInput from "./MessageInput";
-import Messages from "./Messages";
-import { TiMessages } from "react-icons/ti";
-import { useAuthContext } from "../../context/AuthContext";
+import { useEffect } from 'react';
+import { TiMessages } from 'react-icons/ti';
+import Messages from './Messages.jsx';
+import MessageInput from './MessageInput.jsx';
+import { useAuthContext } from '../../context/AuthContext.jsx';
 import { useConversationContext } from '../../context/ConversationContext.jsx';
 
 const MessageContainer = () => {
@@ -10,7 +10,7 @@ const MessageContainer = () => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         setSelectedConversation(null);
       }
     };
@@ -18,16 +18,16 @@ const MessageContainer = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [setSelectedConversation]);
+  }, []);
 
   return (
     <div className="flex-1 flex flex-col min-w-[400px]">
-      {!selectedConversation ? (
+      {!selectedConversation?._id ? (
         <NoChatSelected />
       ) : (
         <>
           <div className="p-4 border-b border-white/10">
-            <span className="text-base-content/70">To:</span>{" "}
+            <span className="text-base-content/70">To:</span>{' '}
             <span className="font-medium">{selectedConversation.fullName}</span>
           </div>
           <Messages />

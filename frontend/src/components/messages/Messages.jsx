@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import MessageSkeleton from '../skeletons/MessageSkeleton.jsx';
 import Message from './Message.jsx';
 import useGetMessages from '../../hooks/useGetMessages.js';
@@ -11,12 +11,12 @@ const Messages = () => {
   const { loading, messages } = useGetMessages();
   useListenMessages();
   useSeenMessages();
-  const lastMessageRef = useRef();
+  const lastMessageRef = useRef(null);
 
-  useEffect(() => {
-    setTimeout(() => {
+  useLayoutEffect(() => {
+    if (lastMessageRef.current) {
       lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+    }
   }, [messages]);
 
   const userMessages = messages.filter(
@@ -35,8 +35,8 @@ const Messages = () => {
 
       {!loading &&
         userMessages.length > 0 &&
-        userMessages.map((message) => (
-          <div key={message._id} ref={lastMessageRef}>
+        userMessages.map((message, index) => (
+          <div key={message._id} ref={index === userMessages.length - 1 ? lastMessageRef : null}>
             <Message message={message} />
           </div>
         ))}
