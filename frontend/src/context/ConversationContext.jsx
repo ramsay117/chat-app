@@ -12,12 +12,12 @@ export const ConversationContextProvider = ({ children }) => {
   const [conversations, setConversations] = useState([]);
 
   useEffect(() => {
-    if (selectedConversation) {
+    if (selectedConversation?._id) {
       localStorage.setItem('chat-conversation', JSON.stringify(selectedConversation));
     } else {
       localStorage.removeItem('chat-conversation');
     }
-  }, [selectedConversation]);
+  }, [selectedConversation?._id]);
   return (
     <ConversationContext.Provider
       value={{ messages, setMessages, selectedConversation, setSelectedConversation, conversations, setConversations }}

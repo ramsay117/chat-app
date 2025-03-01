@@ -12,25 +12,25 @@ export const SocketContextProvider = ({ children }) => {
   const { authUser } = useAuthContext();
 
   useEffect(() => {
-    if (authUser) {
-      const socket = io('https://chat-app-mxtx.onrender.com', {
+    if (authUser?._id) {
+      const newSocket = io('http://localhost:8000', {
         query: {
-          userId: authUser._id
-        }
+          userId: authUser._id,
+        },
       });
-      socket.on('getOnlineUsers', (users) => {
-        setOnlineUsers(users)
-      })
-      setSocket(socket)
 
-      return () => socket.close();
-    } else {
-      if (socket) {
-        socket.close()
+      newSocket.on('getOnlineUsers', (users) => {
+        setOnlineUsers(users);
+      });
+
+      setSocket(newSocket);
+
+      return () => {
+        newSocket.close();
         setSocket(null);
-      }
+      };
     }
-  }, [authUser])
+  }, [authUser?._id]);
 
   return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
-}
+};

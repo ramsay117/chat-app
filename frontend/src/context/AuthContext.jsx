@@ -10,12 +10,12 @@ export const AuthContextProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(JSON.parse(localStorage.getItem('chat-user')) || null);
 
   useEffect(() => {
-    if (authUser) {
+    if (authUser?._id) {
       localStorage.setItem('chat-user', JSON.stringify(authUser));
     } else {
       localStorage.removeItem('chat-user');
     }
-  }, [authUser]);
+  }, [authUser?._id]);
 
   return <AuthContext.Provider value={{ authUser, setAuthUser }}>{children}</AuthContext.Provider>;
 };

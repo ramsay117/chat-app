@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import GenderRadio from '../components/ui/GenderRadio.jsx';
-import { useState } from 'react';
 import useSignup from '../hooks/useSignup.js';
 
 const Signup = () => {

@@ -12,9 +12,14 @@ export const useLogout = () => {
   const logout = useCallback(async () => {
     try {
       setLoading(true);
+
+      localStorage.removeItem('chat-user');
+      localStorage.removeItem('chat-conversation');
+
       setAuthUser(null);
       setSelectedConversation(null);
       setMessages([]);
+
       await axios.get('api/auth/logout');
 
       toast.success('Logged out successfully');
@@ -25,7 +30,7 @@ export const useLogout = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [setAuthUser, setSelectedConversation, setMessages]);
 
   return { loading, logout };
 };

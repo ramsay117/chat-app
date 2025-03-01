@@ -1,5 +1,5 @@
-import MessageContainer from "../components/messages/MessageContainer.jsx";
-import Sidebar from "../components/sidebar/Sidebar.jsx";
+import MessageContainer from '../components/messages/MessageContainer.jsx';
+import Sidebar from '../components/sidebar/Sidebar.jsx';
 import { ConversationContextProvider } from '../context/ConversationContext.jsx';
 
 const Home = () => {
