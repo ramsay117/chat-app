@@ -18,5 +18,8 @@
       "src": "/(.*)",
       "dest": "/backend/server.js"
     }
-  ]
+  ],
+  "git": {
+    "lfs": true
+  }
 }
