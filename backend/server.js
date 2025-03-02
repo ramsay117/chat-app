@@ -31,6 +31,8 @@ app.use('/api/users', userRouter);
 
 if (process.env.NODE_ENV === 'production') {
   const staticPath = path.join(__dirname, 'frontend', 'dist');
+
+  app.use('/frontend', express.static(staticPath));
   app.use(express.static(staticPath));
 
   app.get('*', (req, res) => {
