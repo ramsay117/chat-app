@@ -29,14 +29,13 @@ app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoute);
 app.use('/api/users', userRouter);
 
-if (process.env.NODE_ENV === 'production') {
-  const staticPath = path.join(__dirname, 'frontend', 'dist');
-  app.use(express.static(staticPath));
+const staticPath = path.join(__dirname, 'frontend', 'dist');
+app.use(express.static(staticPath));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(staticPath, 'index.html'));
-  });
-}
+app.get('*', (req, res) => {
+  console.log('Fallback route hit:', req.url);
+  res.sendFile(path.join(staticPath, 'index.html'));
+});
 
 const PORT = process.env.PORT || 8000;
 
