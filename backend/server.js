@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import connectToMongoDB from './db/connectToMongoDB.js';
 import authRoutes from './routes/auth.routes.js';
 import messageRoute from './routes/message.routes.js';
@@ -30,13 +31,21 @@ app.use('/api/messages', messageRoute);
 app.use('/api/users', userRouter);
 
 if (process.env.NODE_ENV === 'production') {
-  const staticPath = path.join(__dirname, 'frontend', 'dist');
+  const distPath = path.join(__dirname, 'frontend', 'dist');
+  const assetsPath = path.join(distPath, 'assets');
 
-  app.use('/frontend', express.static(staticPath));
-  app.use(express.static(staticPath));
+  app.use('/assets', express.static(assetsPath));
+  app.use('/frontend/assets', express.static(assetsPath));
+  app.use('/frontend/dist/assets', express.static(assetsPath));
+
+  app.use(express.static(assetsPath));
+
+  app.use(express.static(distPath));
+  app.use('/frontend', express.static(distPath));
+  app.use('/frontend/dist', express.static(distPath));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(staticPath, 'index.html'));
+    res.sendFile(path.join(distPath, 'index.html'));
   });
 }
 
