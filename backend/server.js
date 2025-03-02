@@ -12,6 +12,11 @@ import { app, server } from './socket/socket.js';
 config();
 const __dirname = path.resolve();
 
+// Log startup information
+console.log('Starting server...');
+console.log('Environment:', process.env.NODE_ENV);
+console.log('__dirname:', __dirname);
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -26,16 +31,23 @@ if (process.env.NODE_ENV !== 'production') {
   );
 }
 
+// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoute);
 app.use('/api/users', userRouter);
 
 // Serve static files and handle client-side routing in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
+  // Log the path we're trying to serve from
+  const staticPath = path.join(__dirname, 'frontend', 'dist');
+  console.log('Serving static files from:', staticPath);
 
+  app.use(express.static(staticPath));
+
+  // This should be the LAST route
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+    console.log('Fallback route hit:', req.url);
+    res.sendFile(path.join(staticPath, 'index.html'));
   });
 }
 
