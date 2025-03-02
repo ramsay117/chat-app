@@ -10,7 +10,6 @@ const useSendMessage = () => {
   const sendMessage = useCallback(
     async (message) => {
       if (!selectedConversation?._id || !message.trim()) return false;
-
       try {
         setLoading(true);
         const res = await axios.post(`api/messages/send/${selectedConversation._id}`, { message });

@@ -32,7 +32,7 @@ const useLogin = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post('api/auth/login', { username, password });
+      const res = await axios.post('api/auth/login', { username: username.trim(), password });
       setAuthUser(res.data);
 
       toast.success('Login successful');

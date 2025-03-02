@@ -3,12 +3,11 @@ import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 import cors from 'cors';
 import path from 'path';
-
 import connectToMongoDB from './db/connectToMongoDB.js';
 import authRoutes from './routes/auth.routes.js';
 import messageRoute from './routes/message.routes.js';
 import userRouter from './routes/user.routes.js';
-import { app, io, server } from './socket/socket.js';
+import { app, server } from './socket/socket.js';
 
 config();
 const __dirname = path.resolve();
@@ -31,7 +30,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 const startServer = async () => {
   try {
