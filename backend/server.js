@@ -14,21 +14,30 @@ const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: ['http://localhost:5173'],
-    methods: ['GET', 'POST'],
-  }),
-);
-app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
+
+// CORS only needed in development
+if (process.env.NODE_ENV !== 'production') {
+  app.use(
+    cors({
+      origin: ['http://localhost:5173', 'http://localhost:3000'],
+      credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    }),
+  );
+}
 
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoute);
 app.use('/api/users', userRouter);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
-});
+// Serve static files and handle client-side routing in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+  });
+}
 
 const PORT = process.env.PORT || 8000;
 
@@ -36,7 +45,7 @@ const startServer = async () => {
   try {
     await connectToMongoDB();
     server.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
     });
   } catch (error) {
     console.error('Failed to start server:', error.message);

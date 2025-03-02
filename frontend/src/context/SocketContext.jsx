@@ -13,14 +13,21 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser?._id) {
-      const newSocket = io('http://localhost:8000', {
+      // Connect to Socket.IO at the same domain in monolithic setup
+      const newSocket = io('', {
         query: {
           userId: authUser._id,
         },
+        transports: ['websocket'],
+        reconnectionAttempts: 5,
       });
 
       newSocket.on('getOnlineUsers', (users) => {
         setOnlineUsers(users);
+      });
+
+      newSocket.on('connect_error', (error) => {
+        console.error('Socket connection error:', error.message);
       });
 
       setSocket(newSocket);

@@ -6,12 +6,20 @@ import Message from '../models/message.model.js';
 const app = express();
 const server = http.createServer(app);
 
-const io = new SocketIOServer(server, {
-  cors: {
-    origin: ['http://localhost:5173'],
-    methods: ['GET', 'POST'],
-  },
-});
+// Socket.IO configuration - CORS only in development
+const corsOptions = {
+  cors:
+    process.env.NODE_ENV === 'production'
+      ? false
+      : {
+          origin: ['http://localhost:5173', 'http://localhost:3000'],
+          methods: ['GET', 'POST'],
+          credentials: true,
+        },
+  transports: ['websocket', 'polling'],
+};
+
+const io = new SocketIOServer(server, corsOptions);
 
 export const getReceiverSocketId = (receiverId) => {
   return userSocketMap[receiverId];
